@@ -9,12 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
 
 @SpringBootApplication
 @EnableMyConfig
 @EnableConfigurationProperties({MyConfigProperty.class})
+@RestController
 public class MyconfigDemoApplication {
     @Autowired
     Environment environment;
@@ -23,7 +26,6 @@ public class MyconfigDemoApplication {
     MyConfigProperty myConfigProperty;
     @Value("${my.a}")
     String a;
-
 
     public static void main(String[] args) {
         SpringApplication.run(MyconfigDemoApplication.class, args);
@@ -37,4 +39,11 @@ public class MyconfigDemoApplication {
             System.out.println(myConfigProperty.getA());
         };
     }
+
+    @GetMapping("/a")
+    public String a() {
+        return "value a: " + a + "\n"
+                + "myConfigProperty: " + myConfigProperty.getA() + "\n";
+    }
+
 }

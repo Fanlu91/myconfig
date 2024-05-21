@@ -7,3 +7,7 @@ myconfig:
   env:dev
   ns:public
   configServer:http://localhost:9129
+logging:
+  level:
+    root: info
+    cn.kimmking: debug

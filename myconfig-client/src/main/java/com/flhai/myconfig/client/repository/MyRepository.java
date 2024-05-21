@@ -12,6 +12,9 @@ public interface MyRepository {
     static MyRepository getDefault(ConfigMeta configMeta) {
         return new MyRepositoryImpl(configMeta);
     }
+
     Map<String, String> getConfig();
+
+    void addListener(MyRepositoryChangeListener listener);
 
 }

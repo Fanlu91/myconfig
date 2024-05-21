@@ -3,6 +3,8 @@ package com.flhai.myconfig.client.config;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.Ordered;
 import org.springframework.core.PriorityOrdered;
@@ -14,14 +16,21 @@ import org.springframework.core.env.Environment;
  * my property sources processor
  * add my property source to environment
  */
-public class PropertySourcesProcessor implements BeanFactoryPostProcessor, EnvironmentAware, PriorityOrdered {
+public class PropertySourcesProcessor implements BeanFactoryPostProcessor, EnvironmentAware, PriorityOrdered, ApplicationContextAware {
     Environment environment;
+
+    ApplicationContext applicationContext;
     private final static String MY_PROPERTY_SOURCE = "MyPropertySource";
     private final static String MY_COMPOSITE_PROPERTY_SOURCES = "MyCompositePropertySources";
 
     @Override
     public void setEnvironment(Environment environment) {
         this.environment = environment;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 
     @Override
@@ -38,7 +47,7 @@ public class PropertySourcesProcessor implements BeanFactoryPostProcessor, Envir
         String configServer = configurableEnvironment.getProperty("myconfig.configServer", "http://localhost:9129");
 
         ConfigMeta configMeta = new ConfigMeta(app, env, ns, configServer);
-        MyConfigService configService = MyConfigService.getDefault(configMeta);
+        MyConfigService configService = MyConfigService.getDefault(applicationContext, configMeta);
 
         MyPropertySource propertySource = new MyPropertySource(MY_PROPERTY_SOURCE, configService);
         CompositePropertySource composite = new CompositePropertySource(MY_COMPOSITE_PROPERTY_SOURCES);
@@ -50,5 +59,6 @@ public class PropertySourcesProcessor implements BeanFactoryPostProcessor, Envir
     public int getOrder() {
         return Ordered.HIGHEST_PRECEDENCE;
     }
+
 
 }
