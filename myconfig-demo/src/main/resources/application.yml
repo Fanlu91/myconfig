@@ -1,0 +1,9 @@
+server:
+  port: 8888
+my:
+  a: yml-a00
+myconfig:
+  app:app1
+  env:dev
+  ns:public
+  configServer:http://localhost:9129
