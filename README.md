@@ -80,3 +80,9 @@ void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws 
 
 
 ```
+
+# todo
+
+发现一个偶发的重复add 而不是update的bug
+
+无法删除配置

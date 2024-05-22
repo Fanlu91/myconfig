@@ -8,3 +8,31 @@ content-type: application/json
 {
 "my.a": "updated2"
 }
+
+### update myrpc config
+POST http://localhost:9129/update?app=app1&env=dev&ns=public&pkey=kk.a
+content-type: application/json
+
+{
+  "myrpc.consumer.retries":"2",
+  "myrpc.consumer.timeout":"1000",
+  "myrpc.consumer.greyRatio":"10",
+  "myrpc.consumer.faultLimit":"10",
+  "myrpc.consumer.halfOpenInitialDelay":"10000",
+  "myrpc.consumer.halfOpenDelay":"70000",
+  "logging.level.root":"INFO",
+  "logging.level.org.springframework":"INFO",
+  "logging.level.com.flhai":"DEBUG",
+  "myregistry.servers":"http://localhost:8484",
+  "myrpc.zk.servers":"localhost:2181",
+  "myrpc.zk.namespace":"myrpc",
+  "myrpc.app.id":"app1",
+  "myrpc.app.namespace":"public",
+  "myrpc.app.env":"dev",
+  "myrpc.provider.test":"from_my_config_server",
+  "myrpc.provider.metas.grey":"false",
+  "myrpc.provider.metas.dc":"dc0",
+  "myrpc.provider.metas.unit":"unit0",
+  "myrpc.provider.metas.refillInterval":"300000",
+  "myrpc.provider.metas.maxToken":"4"
+}
