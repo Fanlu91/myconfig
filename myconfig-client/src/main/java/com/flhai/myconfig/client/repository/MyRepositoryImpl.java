@@ -3,6 +3,7 @@ package com.flhai.myconfig.client.repository;
 import cn.kimmking.utils.HttpUtils;
 import com.alibaba.fastjson.TypeReference;
 import com.flhai.myconfig.client.config.ConfigMeta;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+@Slf4j
 public class MyRepositoryImpl implements MyRepository {
 
     ConfigMeta meta;
@@ -34,11 +36,10 @@ public class MyRepositoryImpl implements MyRepository {
         });
         long oldVersion = versionMap.getOrDefault(meta.genKey(), -1L);
         if (version > oldVersion) {
-            System.out.println("config changed, old version: " + oldVersion + ", new version: " + version);
+            log.info("[MYCONFIG] config changed, old version: " + oldVersion + ", new version: " + version);
             versionMap.put(meta.genKey(), version);
             Map<String, String> newConfigs = listConfigs();
             configMap.put(meta.genKey(), newConfigs);
-            System.out.println("publish event with keys: " + newConfigs.keySet());
             // publish event in order to refresh the environment
             listeners.forEach(l -> l.onChange(new MyRepositoryChangeListener.ChangeEvent(meta, newConfigs)));
         }
