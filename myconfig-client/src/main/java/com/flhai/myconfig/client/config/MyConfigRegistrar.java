@@ -1,5 +1,7 @@
 package com.flhai.myconfig.client.config;
 
+import com.flhai.myconfig.client.value.SpringValueProcessor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -11,23 +13,31 @@ import org.springframework.core.type.AnnotationMetadata;
 import java.util.Arrays;
 import java.util.Optional;
 
+@Slf4j
 public class MyConfigRegistrar implements ImportBeanDefinitionRegistrar {
 
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
-        System.out.println("==> register PropertySourcesProcessor");
+        log.info("==> register PropertySourcesProcessor");
         // avoid duplicate registration
+
+        registerClass(registry, PropertySourcesProcessor.class);
+        registerClass(registry, SpringValueProcessor.class);
+
+    }
+
+    private static void registerClass(BeanDefinitionRegistry registry, Class<?> aClass) {
+        log.info("register class: {}", aClass.getName());
         Optional<String> first = Arrays.stream(registry.getBeanDefinitionNames()).filter(
-                        x -> PropertySourcesProcessor.class.getName().equals(x))
+                        x -> aClass.getName().equals(x))
                 .findFirst();
         if (first.isPresent()) {
-            System.out.println("PropertySourcesProcessor already registered");
+            log.info("PropertySourcesProcessor already registered");
             return;
         }
         // create bean definition
         AbstractBeanDefinition beanDefinition = BeanDefinitionBuilder
-                .genericBeanDefinition(PropertySourcesProcessor.class).getBeanDefinition();
+                .genericBeanDefinition(aClass).getBeanDefinition();
         // register bean definition
-        registry.registerBeanDefinition(PropertySourcesProcessor.class.getName(), beanDefinition);
-
+        registry.registerBeanDefinition(aClass.getName(), beanDefinition);
     }
 }

@@ -6,6 +6,5 @@ POST http://localhost:9129/update?app=app1&env=dev&ns=public&pkey=kk.a
 content-type: application/json
 
 {
-"my.a": "updated3",
-"my.b": "2"
+"my.a": "updated2"
 }
