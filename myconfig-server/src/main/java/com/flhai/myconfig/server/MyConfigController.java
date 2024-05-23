@@ -2,6 +2,7 @@ package com.flhai.myconfig.server;
 
 import com.flhai.myconfig.server.dal.ConfigsMapper;
 import com.flhai.myconfig.server.model.Configs;
+import com.flhai.myconfig.server.model.DistributedLocks;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,9 @@ public class MyConfigController {
 
     @Autowired
     ConfigsMapper configsMapper;
+
+    @Autowired
+    DistributedLocks distributedLocks;
 
     Map<String, Long> VERSIONS = new HashMap<>();
 
@@ -47,5 +51,10 @@ public class MyConfigController {
     @GetMapping("/version")
     public Long getVersion(String app, String env, String ns) {
         return VERSIONS.getOrDefault(app + "_" + env + "_" + ns, -1L);
+    }
+
+    @GetMapping("/locked")
+    public boolean isLocked() {
+        return distributedLocks.getLocked().get();
     }
 }

@@ -5,22 +5,26 @@ spring:
   application:
     name: myconfig-server
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:h2db
+    #    driver-class-name: org.h2.Driver
+    #    url: jdbc:h2:mem:h2db
+    #    username: root
+    #    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mysql?useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: root
-    password: 123456
+    password: qwe123asd
   sql:
     init:
-      platform: h2
+      platform: mysql
       schema-locations: classpath:/init.sql
-      #      data-locations: classpath:/data.sql
-      mode: always
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-      settings:
-        web-allow-others: true
+      #      The initialization scripts are run only when an embedded database (such as H2, HSQLDB, or Derby) is used.
+      mode: embedded
+  #  h2:
+  #    console:
+  #      enabled: true
+  #      path: /h2-console
+  #      settings:
+  #        web-allow-others: true
   mybatis:
     configuration:
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

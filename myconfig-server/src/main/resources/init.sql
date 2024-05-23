@@ -1,3 +1,5 @@
+create schema if not exists `myconfig`;
+use `myconfig`;
 create table if not exists `configs`
 (
     `app`  varchar(64)  not null,
@@ -7,17 +9,10 @@ create table if not exists `configs`
     `pval` varchar(128) null
 );
 
-insert into configs (app, env, ns, pkey, pval)
-values ('app1', 'dev', 'public', 'my.a', 'config-server-a00');
-insert into configs (app, env, ns, pkey, pval)
-values ('app1', 'dev', 'public', 'my.b', 'http://localhost:9129');
-insert into configs (app, env, ns, pkey, pval)
-values ('app1', 'dev', 'public', 'kk.c', 'cc100');
-
-
 create table if not exists `locks`
 (
     `id`  int primary key not null,
     `app` varchar(64)     not null
 );
-insert into locks (id, app) values (1, 'kkconfig-server');
+
+-- insert into locks (id, app) values (1, 'kkconfig-server');
