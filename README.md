@@ -8,8 +8,6 @@ myconfig-demo: 配置中心客户端demo。
 
 ## ImportBeanDefinitionRegistrar
 
-
-
 ImportBeanDefinitionRegistrar 允许开发者以编程方式向 Spring 容器中注册 Bean，而不仅仅是通过 XML 或注解的静态配置。
 
 ```java
@@ -46,8 +44,6 @@ public class AppConfig {
 3. **跨模块 Bean 定义**：在复杂项目中，不同模块可能需要动态互相注册 Bean，通过 `ImportBeanDefinitionRegistrar` 可以实现这种需求。
 4. **自定义注解处理**：开发自定义注解，并通过 `ImportBeanDefinitionRegistrar` 实现自定义注解的处理逻辑，注册相应的 Bean。
 
-
-
 ## BeanFactoryPostProcessor
 
 `BeanFactoryPostProcessor` 是 Spring 框架中的一个扩展接口，用于在 Spring 容器初始化 Bean 之前对 Bean 定义（BeanDefinition）进行修改。`BeanFactoryPostProcessor` 提供了一个在容器实例化任何 Bean 之前进行干预的机会，因此它适用于需要对 Bean 配置进行全局修改的场景。
@@ -77,8 +73,6 @@ void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws 
         beanDefinition.setDependsOn("dependencyBean");
     }
 }
-
-
 ```
 
 # todo
@@ -86,3 +80,12 @@ void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws 
 发现一个偶发的重复add 而不是update的bug
 
 无法删除配置
+
+DeferredResult 完善myconfig 更新机制，降低延迟
+
+- 改造 servercontroller，增加一个map，修改version 和 update
+
+- 改造 client，心跳不需要定时调度，每次更新完自己再去重复下一次，（根据server端的代码自己卡时间？无限自己循环？）
+
+shenyu里有配置下发的实现机制，那套技术实现适配我们的场景吗？ Apache ShenYu源码阅读系列-基于Http长轮询的数据同步 - 仰望云端的文章 - 知乎
+https://zhuanlan.zhihu.com/p/428898966
